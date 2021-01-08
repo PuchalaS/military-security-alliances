@@ -58,21 +58,12 @@ def alliance_tanks_info(x_alliance):
     '''Query for alliance - getting tanks information
     returns: tuple list of (tank_type, quantity)'''
     alliance_tank_list = []
-    for vrow in alliances.view('index/thread_alliance_view'):
-        row  = vrow.value
-        alliance = row.get('Name')
+    for vrow in combined.view('index/alliance_tank_type_view', group_level = 2):
+        row  = vrow.key
+        alliance = row[0]
         if (alliance == x_alliance):
-            countries = row.get('Countries')
-            for country in countries:
-                country_tank = country_tank_info(country)
-                if country_tank: 
-                    for tank in country_tank:
-                        alliance_tank_list.append(tank)
-            print (alliance_tank_list)
-            output = defaultdict(int) 
-            for k, v in alliance_tank_list:
-                output[k] += int(v)
-    return list(output.items())
+            alliance_tank_list.append((row[1], vrow.value))
+    return alliance_tank_list
 
 def alliance_countries_info(x_alliance):
     '''Query for alliance - getting member countries information
@@ -95,6 +86,34 @@ def alliance_tanks_origin_info(x_alliance):
     return country_tank_seller_origin_list
 
 
+def overall_tanks_quantity():
+    '''Query for whole db - type quantity information
+    returns: tuple list of (type, quantity)'''
+    overall_tanks_quantity_list = []
+    for vrow in tanks.view('index/overall_tank_type_quantity_view', group_level = 1):
+        row  = vrow.key
+        overall_tanks_quantity_list.append((row, vrow.value))
+    return overall_tanks_quantity_list
+
+def overall_orgin_quantity():
+    '''Query for whole db - orgin quantity information
+    returns: tuple list of (orgin, quantity)'''
+    overall_orgin_quantity_list = []
+    for vrow in tanks.view('index/overall_tank_orgin_quantity_view', group_level = 1):
+        row  = vrow.key
+        overall_orgin_quantity_list.append((row, vrow.value))
+    return overall_orgin_quantity_list
+
+def overall_alliances_tank_quantity():
+    '''Query for whole db - orgin quantity information
+    returns: tuple list of (orgin, quantity)'''
+    overall_alliances_tank_quantity_list = []
+    for vrow in combined.view('index/overall_alliance_tanks_quantity_view', group_level = 1):
+        row  = vrow.key
+        overall_alliances_tank_quantity_list.append((row, vrow.value))
+    return overall_alliances_tank_quantity_list
+
+
 country_tanks = country_tank_info("Iran")
 country_aliance_info = country_aliance_info("Iran")
 country_tank_seller_origin_info = country_tank_seller_origin_info("Iran")
@@ -109,6 +128,9 @@ print(country_tank_seller_origin_info)
 print(alliance_tanks)
 print(alliance_countries)
 print(alliance_tanks_origin)
+print(overall_tanks_quantity())
+print(overall_orgin_quantity())
+print(overall_alliances_tank_quantity())
 #for row in tanks.view('index/count_threads', group_level = 1):
 #    print(str(row.key) + " " + str(row.value))
 

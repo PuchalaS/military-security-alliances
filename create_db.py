@@ -33,6 +33,7 @@ tanks['5'] = {'Id':"5",'Country':'Iran','Type': 'M48 Patton', 'Quantity': '108',
 tanks['6'] = {'Id':"6",'Country':'Iran','Type': 'M60 Patton', 'Quantity': '150', 'Origin': 'United States'}
 tanks['7'] = {'Id':"7",'Country':'Iran','Type': 'Chieftain (tank) MK3', 'Quantity': '100', 'Origin': 'United Kingdom'}
 tanks['8'] = {'Id':"8",'Country':'Chad','Type': 'T-55', 'Quantity': '60', 'Origin': 'Soviet Union'}
+tanks['9'] = {'Id':"9",'Country':'qwe','Type': 'T-55', 'Quantity': '150', 'Origin': 'Soviet Union'}
 
 alliances['1'] = {'Id':"1",'Name':'The U.S.–Afghanistan Strategic Partnership Agreement','Countries': ['Afghanistan', 'USA'], 'Start':'2004 ','End':'0'}
 alliances['2'] = {'Id':"2",'Name':'Axis of Resistance', 'Countries': ['Iran', 'Syria'], 'Start':'2004 ','End':'0'}
@@ -56,13 +57,37 @@ def tank_orgin_mapper(doc):
         _quantity = doc['Quantity']
         yield([_country,_orgin], int(_quantity))
 
-def alliance_orgin_tanks_mapper(doc):
+def alliance_tanks_orgin_mapper(doc):
     if doc.get('Id'):
         _name = doc['Name']
         _orgin = doc['Origin']
         _quantity = doc['Quantity']
         yield([_name,_orgin], int(_quantity))
 
+def alliance_tanks_type_mapper(doc):
+    if doc.get('Id'):
+        _name = doc['Name']
+        _type = doc['Type']
+        _quantity = doc['Quantity']
+        yield([_name,_type], int(_quantity))
+
+def overall_tank_quantity_mapper(doc):
+    if doc.get('Id'):
+        _type = doc['Type']
+        _quantity = doc['Quantity']
+        yield(_type, int(_quantity))
+
+def overall_tank_orgin_mapper(doc):
+    if doc.get('Id'):
+        _orgin = doc['Origin']
+        _quantity = doc['Quantity']
+        yield(_orgin, int(_quantity))
+
+def overall_alliance_tanks_quantity_mapper(doc):
+    if doc.get('Id'):
+        _name = doc['Name']
+        _quantity = doc['Quantity']
+        yield(_name, int(_quantity))
 #Mapping reducing functions
 
 def summingReducer(keys, values, rereduce):
@@ -75,14 +100,8 @@ def summingReducer(keys, values, rereduce):
 #View creation
 
 
-
 view = ViewDefinition('index', 'thread_tank_view',documentMapper, language = 'python')
 view.sync(tanks)
-
-#view for country and tank quantity and orgin
-view = ViewDefinition('index', 'tank_orgin_view',tank_orgin_mapper, reduce_fun = summingReducer, language = 'python')
-view.sync(tanks)
-
 
 view = ViewDefinition('index', 'thread_alliance_view',documentMapper, language = 'python')
 view.sync(alliances)
@@ -105,12 +124,31 @@ for a_vrow in alliances.view('index/thread_alliance_view'):
                 combined[str(i)] = {'Id':str(i),'Country': t_country,'Type': t_type, 'Quantity': t_quantity, 'Origin': t_orgin,'Name':a_alliance, 'Start':a_start,'End':a_end}
                 print (combined[str(i)] )
                 i+=1
-                
-            
 
 view = ViewDefinition('index', 'thread_combined_view',documentMapper, language = 'python')
 view.sync(combined)
 
-#view for alliance - orgin and of quantity tanks 
-view = ViewDefinition('index', 'alliance_tank_orgin_view',alliance_orgin_tanks_mapper, reduce_fun = summingReducer, language = 'python')
+#view for country and tank quantity and orgin
+view = ViewDefinition('index', 'tank_orgin_view',tank_orgin_mapper, reduce_fun = summingReducer, language = 'python')
+view.sync(tanks)
+
+#view for overall - quantity of tanks 
+view = ViewDefinition('index', 'overall_tank_type_quantity_view',overall_tank_quantity_mapper, reduce_fun = summingReducer, language = 'python')
+view.sync(tanks)
+
+#view for overall - tanks orgin 
+view = ViewDefinition('index', 'overall_tank_orgin_quantity_view',overall_tank_orgin_mapper, reduce_fun = summingReducer, language = 'python')
+view.sync(tanks)
+
+#view for overall - quantity of tanks in alliances 
+view = ViewDefinition('index', 'overall_alliance_tanks_quantity_view',overall_alliance_tanks_quantity_mapper, reduce_fun = summingReducer, language = 'python')
 view.sync(combined)
+
+#view for alliance - orgin and of quantity tanks 
+view = ViewDefinition('index', 'alliance_tank_orgin_view',alliance_tanks_orgin_mapper, reduce_fun = summingReducer, language = 'python')
+view.sync(combined)
+
+
+view = ViewDefinition('index', 'alliance_tank_type_view',alliance_tanks_type_mapper, reduce_fun = summingReducer, language = 'python')
+view.sync(combined)
+
