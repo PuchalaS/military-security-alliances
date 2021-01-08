@@ -1,6 +1,7 @@
 import couchdb
 from couchdb.design import ViewDefinition
 
+
 couch = couchdb.Server("http://admin:admin@localhost:5984")
 
 #couch = couchdb.Server("http://2840f3b8-e4d3-4326-bdbb-4e0db7f7e344-bluemix:admin@https://examples.cloudant.com/query-movies")

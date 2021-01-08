@@ -93,20 +93,24 @@ class Ui_MainWindow(object):
         self.alliance_cB.addItems(queries_db.get_all_alliances())
         # Button setup
         self.calculate_pushbutton.clicked.connect(self.on_click_calcualte_button)
+        #Font setup
+        font = QtGui.QFont("Monospace")
+        font.setStyleHint(QtGui.QFont.TypeWriter)
+        self.output_window.setFont(font)
 
     def on_click_calcualte_button(self):
         text = str(self.country_cB.currentText())
         function = self.country_fun_cB.currentIndex()
-        output = []
+        #output = []
+        #print (text)
+        if function == 0:
+            self.output_window.setText(str(queries_db.country_tank_info(text, formated = True)))
         if function == 1:
-            output = queries_db.country_tank_info(text)
+            self.output_window.setText(str(queries_db.country_aliance_info(text, formated = True)))
         if function == 2:
-            output = queries_db.country_aliance_info(text)
-        if function == 3:
-            output = queries_db.country_tank_seller_origin_info(text)
-        print (queries_db.country_tank_info(text))
-        self.output_window.setText(str(queries_db.country_tank_info(text)))
-
+            self.output_window.setText(str(queries_db.country_tank_seller_origin_info(text, formated = True)))
+        #print (queries_db.country_tank_info(text))
+        
 
 
     def retranslateUi(self, MainWindow):

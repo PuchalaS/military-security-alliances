@@ -17,11 +17,20 @@ combined = couch['combined']
 for row in tanks.view('index/tank_orgin_view', group_level = 2):
     print(str(row.key) + " " + str(row.value))
 
+def create_table(fields, data):
+    pt = PrettyTable(field_names = fields)
+    for f in fields:
+        pt.align = 'r'
+    data.sort(key=lambda x: x[1],reverse=True)
+    for row in data:
+        pt.add_row([row[0], row[1]])
+    return pt.get_string()
 
 #
 #Queries
 #
-def country_tank_info(x_country):
+
+def country_tank_info(x_country, formated = False):
     '''Query for country - getting tanks information
     returns: tuple list of (tank_type, quantity)'''
     tank_quantity_list = []
@@ -30,9 +39,14 @@ def country_tank_info(x_country):
         country = row.get('Country')
         if (country == x_country):
             tank_quantity_list.append((row.get('Type'), row.get('Quantity')))
-    return tank_quantity_list
+    if not formated:
+        return tank_quantity_list
+    else:
+        return create_table( ['Type' , 'Count'], tank_quantity_list)
 
-def country_aliance_info(x_country):
+
+
+def country_aliance_info(x_country, formated = False):
     '''Query for country - alliance  information
     returns: list of country alliances'''
     country_aliance_list = []
@@ -41,9 +55,12 @@ def country_aliance_info(x_country):
         countries = row.get('Countries')
         if x_country in countries:
             country_aliance_list.append(row.get('Name'))
-    return country_aliance_list
+    if not formated:
+        return country_aliance_list
+    else:
+        return ", ".join(country_aliance_list)
 
-def country_tank_seller_origin_info(x_country):
+def country_tank_seller_origin_info(x_country, formated = False):
     '''Query for country - tanks orgin information
     returns: tuple list of (orgin, quantity)'''
     country_tank_seller_origin_list = []
@@ -52,7 +69,10 @@ def country_tank_seller_origin_info(x_country):
         country = row[0]
         if (country == x_country):
             country_tank_seller_origin_list.append((row[1], vrow.value))
-    return country_tank_seller_origin_list
+    if not formated:
+        return country_tank_seller_origin_list
+    else:
+        return create_table( ['Orgin' , 'Count'], country_tank_seller_origin_list)
 
 def alliance_tanks_info(x_alliance):
     '''Query for alliance - getting tanks information
@@ -131,6 +151,7 @@ def get_all_alliances():
             all_alliances.append(name)
     return sorted(all_alliances)
 
+'''
 country_tanks = country_tank_info("Iran")
 country_aliance_info = country_aliance_info("Iran")
 country_tank_seller_origin_info = country_tank_seller_origin_info("Iran")
@@ -149,6 +170,7 @@ print(overall_tanks_quantity())
 print(overall_orgin_quantity())
 print(overall_alliances_tank_quantity())
 print(get_all_countries())
+'''
 #for row in tanks.view('index/count_threads', group_level = 1):
 #    print(str(row.key) + " " + str(row.value))
 
