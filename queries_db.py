@@ -113,6 +113,23 @@ def overall_alliances_tank_quantity():
         overall_alliances_tank_quantity_list.append((row, vrow.value))
     return overall_alliances_tank_quantity_list
 
+def get_all_countries():
+    all_countries = []
+    for vrow in tanks.view('index/thread_tank_view'):
+        row  = vrow.value
+        country = row.get('Country')
+        if country not in all_countries:
+            all_countries.append(country)
+    return sorted(all_countries)
+
+def get_all_alliances():
+    all_alliances = []
+    for vrow in alliances.view('index/thread_alliance_view'):
+        row  = vrow.value
+        name = row.get('Name')
+        if name not in all_alliances:
+            all_alliances.append(name)
+    return sorted(all_alliances)
 
 country_tanks = country_tank_info("Iran")
 country_aliance_info = country_aliance_info("Iran")
@@ -131,6 +148,7 @@ print(alliance_tanks_origin)
 print(overall_tanks_quantity())
 print(overall_orgin_quantity())
 print(overall_alliances_tank_quantity())
+print(get_all_countries())
 #for row in tanks.view('index/count_threads', group_level = 1):
 #    print(str(row.key) + " " + str(row.value))
 
