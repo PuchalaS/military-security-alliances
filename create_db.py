@@ -36,7 +36,7 @@ tanks['7'] = {'Id':"7",'Country':'Iran','Type': 'Chieftain (tank) MK3', 'Quantit
 tanks['8'] = {'Id':"8",'Country':'Chad','Type': 'T-55', 'Quantity': '60', 'Origin': 'Soviet Union'}
 tanks['9'] = {'Id':"9",'Country':'qwe','Type': 'T-55', 'Quantity': '150', 'Origin': 'Soviet Union'}
 
-alliances['1'] = {'Id':"1",'Name':'The U.S.–Afghanistan Strategic Partnership Agreement','Countries': ['Afghanistan', 'USA'], 'Start':'2004 ','End':'0'}
+alliances['1'] = {'Id':"1",'Name':'The U.S. Afghanistan Strategic Partnership Agreement','Countries': ['Afghanistan', 'USA'], 'Start':'2004 ','End':'0'}
 alliances['2'] = {'Id':"2",'Name':'Axis of Resistance', 'Countries': ['Iran', 'Syria'], 'Start':'2004 ','End':'0'}
 alliances['3'] = {'Id':"3",'Name':'random alliance', 'Countries': ['Iran', 'Syria', 'Chad','Afghanistan','Bangladesh'], 'Start':'2004 ','End':'0'}
 

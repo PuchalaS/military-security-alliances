@@ -91,6 +91,11 @@ class Ui_MainWindow(object):
         self.country_cB.addItems(queries_db.get_all_countries())
         self.country_fun_cB.addItems(["Tanks quantity", "Alliances involvment", "Tanks orgin"])
         self.alliance_cB.addItems(queries_db.get_all_alliances())
+        self.alliance_fun_cB.addItems(["Tanks quantity", "Member countries", "Tanks orgin"])
+        self.overall_cB.addItems(["Most popular tanks", "Biggest sellers", "Strongest alliances"])
+        #BrowserText setup
+        self.output_window.horizontalScrollBar().setValue(0)
+        self.output_window.setLineWrapMode(0)
         # Button setup
         self.calculate_pushbutton.clicked.connect(self.on_click_calcualte_button)
         #Font setup
@@ -99,16 +104,35 @@ class Ui_MainWindow(object):
         self.output_window.setFont(font)
 
     def on_click_calcualte_button(self):
-        text = str(self.country_cB.currentText())
-        function = self.country_fun_cB.currentIndex()
+        
         #output = []
         #print (text)
-        if function == 0:
-            self.output_window.setText(str(queries_db.country_tank_info(text, formated = True)))
-        if function == 1:
-            self.output_window.setText(str(queries_db.country_aliance_info(text, formated = True)))
-        if function == 2:
-            self.output_window.setText(str(queries_db.country_tank_seller_origin_info(text, formated = True)))
+        if self.country_rb.isChecked():
+            text = str(self.country_cB.currentText())
+            function = self.country_fun_cB.currentIndex()
+            if function == 0:
+                self.output_window.setText(str(queries_db.country_tank_info(text, formated = True)))
+            if function == 1:
+                self.output_window.setText(str(queries_db.country_aliance_info(text, formated = True)))
+            if function == 2:
+                self.output_window.setText(str(queries_db.country_tank_seller_origin_info(text, formated = True)))
+        if self.alliance_rb.isChecked():
+            text = str(self.alliance_cB.currentText())
+            function = self.alliance_fun_cB.currentIndex()
+            if function == 0:
+                self.output_window.setText(str(queries_db.alliance_tanks_info(text, formated = True)))
+            if function == 1:
+                self.output_window.setText(str(queries_db.alliance_countries_info(text, formated = True)))
+            if function == 2:
+                self.output_window.setText(str(queries_db.alliance_tanks_origin_info(text, formated = True)))
+        if self.overall_rb.isChecked():
+            function = self.overall_cB.currentIndex()
+            if function == 0:
+                self.output_window.setText(str(queries_db.overall_tanks_quantity(formated = True)))
+            if function == 1:
+                self.output_window.setText(str(queries_db.overall_orgin_quantity(formated = True)))
+            if function == 2:
+                self.output_window.setText(str(queries_db.overall_alliances_tank_quantity(formated = True)))
         #print (queries_db.country_tank_info(text))
         
 
