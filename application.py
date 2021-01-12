@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
             text = str(self.alliance_cB.currentText())
             function = self.alliance_fun_cB.currentIndex()
             if function == 0:
-                self.output_window.setText(str(queries_db.alliance_tanks_info(text, formated = True)))
+                self.output_window.setText(str(queries_db.alliance_tanks_info(text, formated = True, max_end_date=1900)))
             if function == 1:
                 self.output_window.setText(str(queries_db.alliance_countries_info(text, formated = True)))
             if function == 2:
@@ -184,6 +184,7 @@ class Ui_MainWindow(object):
 
 if __name__ == '__main__':
     import sys
+    x = queries_db.alliance_tanks_info("Crusades", formated = True, max_end_date=1900)
     app = QtWidgets.QApplication([])
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

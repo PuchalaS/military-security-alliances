@@ -81,15 +81,26 @@ def country_tank_seller_origin_info(x_country, formated = False):
     else:
         return create_table( ['Orgin' , 'Count'], country_tank_seller_origin_list)
 
-def alliance_tanks_info(x_alliance, formated = False):
+def alliance_tanks_info(x_alliance, formated = False, max_end_date = 1900):
     '''Query for alliance - getting tanks information
     returns: tuple list of (tank_type, quantity)'''
     alliance_tank_list = []
+    for vrow in alliances.view('index/thread_alliance_view'):
+        row  = vrow.value
+        alliance = row.get('Name')
+        end = int(row.get('End'))
+        if (alliance == x_alliance):
+            if (end <= max_end_date):
+                if not formated:
+                    return []
+                else:
+                    return ["No available information"]
     for vrow in combined.view('index/alliance_tank_type_view', group_level = 2):
         row  = vrow.key
         alliance = row[0]
         if (alliance == x_alliance):
             alliance_tank_list.append((row[1], vrow.value))
+        
     if not formated:
         return alliance_tank_list
     else:
@@ -177,37 +188,21 @@ def get_all_alliances():
         if name not in all_alliances:
             name.replace("Â", "")
             all_alliances.append(name)
-    return all_alliances
 
-'''
-country_tanks = country_tank_info("Iran")
-country_aliance_info = country_aliance_info("Iran")
-country_tank_seller_origin_info = country_tank_seller_origin_info("Iran")
-alliance_tanks = alliance_tanks_info('random alliance')
-alliance_countries = alliance_countries_info('random alliance')
-alliance_tanks_origin = alliance_tanks_origin_info('random alliance')
+def get_coutries_connections():
+    all_coutries_connection = []
+    for vrow in alliances.view('index/thread_alliance_view'):
+        row  = vrow.value
+        countries = row.get('Countries')
+        all_coutries_connection += [[con1, con2] for con1 in countries for con2 in countries]
+    return (all_coutries_connection)
 
-print(sum(int(n) for _,n in country_tanks))
-print(country_tanks) 
-print(country_aliance_info)
-print(country_tank_seller_origin_info)
-print(alliance_tanks)
-print(alliance_countries)
-print(alliance_tanks_origin)
-print(overall_tanks_quantity())
-print(overall_orgin_quantity())
-print(overall_alliances_tank_quantity())
-print(get_all_countries())
-'''
-#for row in tanks.view('index/count_threads', group_level = 1):
-#    print(str(row.key) + " " + str(row.value))
+def get_buyers_sellers_connections():
+    all_buyers_seller_connection = []
+    for vrow in tanks.view('index/thread_tank_view'):
+        row  = vrow.value
+        buyer = row.get('Country')
+        seller = row.get('Origin')
+        all_buyers_seller_connection.append([buyer, seller])
+    return (all_buyers_seller_connection)
 
-
-
-
-#for row in tanks.view('index/count_threads'):
-#    print(str(row.key) + " " + str(row.value))
-    #print("Country: " + row['Country'] + " Tank: " + row['type'])
-
-#print(tanks.get("1"))
-#print(next(ok))
