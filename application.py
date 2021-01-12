@@ -10,6 +10,10 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import queries_db
+from visualization import create_bar_plot
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
@@ -18,8 +22,29 @@ class Ui_MainWindow(object):
         MainWindow.resize(849, 567)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(60, 120, 351, 281))
+        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 851, 531))
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.output_window = QtWidgets.QTextBrowser(self.tab)
+        self.output_window.setGeometry(QtCore.QRect(530, 90, 256, 301))
+        self.output_window.setObjectName("output_window")
+        self.alliance_rb = QtWidgets.QRadioButton(self.tab)
+        self.alliance_rb.setGeometry(QtCore.QRect(70, 220, 16, 16))
+        self.alliance_rb.setText("")
+        self.alliance_rb.setChecked(False)
+        self.alliance_rb.setObjectName("alliance_rb")
+        self.country_rb = QtWidgets.QRadioButton(self.tab)
+        self.country_rb.setGeometry(QtCore.QRect(70, 130, 16, 16))
+        self.country_rb.setText("")
+        self.country_rb.setChecked(False)
+        self.country_rb.setObjectName("country_rb")
+        self.calculate_pushbutton = QtWidgets.QPushButton(self.tab)
+        self.calculate_pushbutton.setGeometry(QtCore.QRect(210, 420, 121, 61))
+        self.calculate_pushbutton.setObjectName("calculate_pushbutton")
+        self.gridLayoutWidget = QtWidgets.QWidget(self.tab)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(90, 100, 351, 281))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -54,27 +79,18 @@ class Ui_MainWindow(object):
         self.alliance_fun_label = QtWidgets.QLabel(self.gridLayoutWidget)
         self.alliance_fun_label.setObjectName("alliance_fun_label")
         self.gridLayout.addWidget(self.alliance_fun_label, 2, 1, 1, 1)
-        self.output_window = QtWidgets.QTextBrowser(self.centralwidget)
-        self.output_window.setGeometry(QtCore.QRect(500, 110, 256, 301))
-        self.output_window.setObjectName("output_window")
-        self.calculate_pushbutton = QtWidgets.QPushButton(self.centralwidget)
-        self.calculate_pushbutton.setGeometry(QtCore.QRect(180, 440, 121, 61))
-        self.calculate_pushbutton.setObjectName("calculate_pushbutton")
-        self.overall_rb = QtWidgets.QRadioButton(self.centralwidget)
-        self.overall_rb.setGeometry(QtCore.QRect(40, 330, 16, 16))
+        self.overall_rb = QtWidgets.QRadioButton(self.tab)
+        self.overall_rb.setGeometry(QtCore.QRect(70, 310, 16, 16))
         self.overall_rb.setText("")
         self.overall_rb.setChecked(True)
         self.overall_rb.setObjectName("overall_rb")
-        self.alliance_rb = QtWidgets.QRadioButton(self.centralwidget)
-        self.alliance_rb.setGeometry(QtCore.QRect(40, 240, 16, 16))
-        self.alliance_rb.setText("")
-        self.alliance_rb.setChecked(False)
-        self.alliance_rb.setObjectName("alliance_rb")
-        self.country_rb = QtWidgets.QRadioButton(self.centralwidget)
-        self.country_rb.setGeometry(QtCore.QRect(40, 150, 16, 16))
-        self.country_rb.setText("")
-        self.country_rb.setChecked(False)
-        self.country_rb.setObjectName("country_rb")
+        self.draw_pushbutton = QtWidgets.QPushButton(self.tab)
+        self.draw_pushbutton.setGeometry(QtCore.QRect(600, 420, 121, 61))
+        self.draw_pushbutton.setObjectName("draw_pushbutton")
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QtWidgets.QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.tabWidget.addTab(self.tab_2, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 849, 21))
@@ -83,30 +99,40 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
         self.retranslateUi(MainWindow)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
         # Comboboxes setup
         self.country_cB.addItems(queries_db.get_all_countries())
         self.country_fun_cB.addItems(["Tanks quantity", "Alliances involvment", "Tanks orgin"])
+        self.country_cB.currentTextChanged.connect(self.deactive_plot_button)
+        self.country_fun_cB.currentTextChanged.connect(self.deactive_plot_button)
         self.alliance_cB.addItems(queries_db.get_all_alliances())
         self.alliance_fun_cB.addItems(["Tanks quantity", "Member countries", "Tanks orgin"])
+        self.alliance_cB.currentTextChanged.connect(self.deactive_plot_button)
+        self.alliance_fun_cB.currentTextChanged.connect(self.deactive_plot_button)
+
         self.overall_cB.addItems(["Most popular tanks", "Biggest sellers", "Strongest alliances"])
+        self.overall_cB.currentTextChanged.connect(self.deactive_plot_button)
+
         #BrowserText setup
         self.output_window.horizontalScrollBar().setValue(0)
         self.output_window.setLineWrapMode(0)
         # Button setup
         self.calculate_pushbutton.clicked.connect(self.on_click_calcualte_button)
+
+        self.draw_pushbutton.setDisabled(True)
+        self.draw_pushbutton.clicked.connect(self.on_click_draw_button)
         #Font setup
         font = QtGui.QFont("Monospace")
         font.setStyleHint(QtGui.QFont.TypeWriter)
         self.output_window.setFont(font)
 
     def on_click_calcualte_button(self):
-        
-        #output = []
-        #print (text)
+        self.draw_pushbutton.setDisabled(False)
         if self.country_rb.isChecked():
             text = str(self.country_cB.currentText())
             function = self.country_fun_cB.currentIndex()
@@ -133,19 +159,28 @@ class Ui_MainWindow(object):
                 self.output_window.setText(str(queries_db.overall_orgin_quantity(formated = True)))
             if function == 2:
                 self.output_window.setText(str(queries_db.overall_alliances_tank_quantity(formated = True)))
-        #print (queries_db.country_tank_info(text))
-        
 
+    def on_click_draw_button(self):
+        x = queries_db.overall_tanks_quantity()
+        
+        create_bar_plot(x, "Overall tank quantity")
+
+    def deactive_plot_button(self):
+        self.draw_pushbutton.setDisabled(True)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.calculate_pushbutton.setText(_translate("MainWindow", "Calculate!"))
         self.overall_label.setText(_translate("MainWindow", "Additional statistics"))
         self.alliance_label.setText(_translate("MainWindow", "Choose alliance:"))
         self.country_fun_label.setText(_translate("MainWindow", "Choose function"))
         self.country_label.setText(_translate("MainWindow", "Choose country:"))
         self.alliance_fun_label.setText(_translate("MainWindow", "Choose function"))
-        self.calculate_pushbutton.setText(_translate("MainWindow", "Calculate!"))
+        self.draw_pushbutton.setText(_translate("MainWindow", "Create plot"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Basic functions"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
+
 
 if __name__ == '__main__':
     import sys

@@ -14,8 +14,8 @@ combined = couch['combined']
 
 
 
-for row in tanks.view('index/tank_orgin_view', group_level = 2):
-    print(str(row.key) + " " + str(row.value))
+#for row in tanks.view('index/tank_orgin_view', group_level = 2):
+#    print(str(row.key) + " " + str(row.value))
 
 def create_table(fields, data):
     pt = PrettyTable(field_names = fields)
@@ -172,9 +172,12 @@ def get_all_alliances():
     for vrow in alliances.view('index/thread_alliance_view'):
         row  = vrow.value
         name = row.get('Name')
+        if isinstance(name, list):
+            name = name[0]
         if name not in all_alliances:
+            name.replace("Â", "")
             all_alliances.append(name)
-    return sorted(all_alliances)
+    return all_alliances
 
 '''
 country_tanks = country_tank_info("Iran")
