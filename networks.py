@@ -1,6 +1,7 @@
 import networkx as nx
 import numpy as np
 import queries_db
+import matplotlib.pyplot as plt
 def draw_alliance_graph (start_date, end_date, k_core):
     '''państwa w sojuszach (państwa są węzłami; połączenie występuje gdy oba kraje są wspólnie w jakimkolwiek sojuszu) - 
     parametry filtrowanie po datach (wszyskie sojusze, które byly aktywne w danym okresie czasu) 
@@ -21,8 +22,8 @@ def draw_alliance_graph (start_date, end_date, k_core):
     G.remove_edges_from(nx.selfloop_edges(G))
     G = nx.k_core(G, k_core)
 
-    #nx.draw(G, with_labels = True)
-    return G 
+    nx.draw(G, with_labels = True)
+    plt.show()
 
 
 def draw_buyers_sellers_graph (k_core):
@@ -43,12 +44,7 @@ def draw_buyers_sellers_graph (k_core):
     G.remove_edges_from(nx.selfloop_edges(G))
     G = nx.k_core(G, k_core)
 
-    #nx.draw(G, with_labels = True) 
-    return G
+    nx.draw(G, with_labels = True) 
+    plt.show()
+
         
-
-
-
-G_all = draw_alliance_graph(1950,2000,20)
-
-draw_buyers_sellers_graph(1)

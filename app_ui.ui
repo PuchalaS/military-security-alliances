@@ -14,174 +14,294 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTextBrowser" name="output_window">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>851</width>
-      <height>531</height>
+      <x>450</x>
+      <y>80</y>
+      <width>361</width>
+      <height>361</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>0</number>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>35</x>
+      <y>100</y>
+      <width>351</width>
+      <height>331</height>
+     </rect>
     </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Basic functions</string>
-     </attribute>
-     <widget class="QTextBrowser" name="output_window">
-      <property name="geometry">
-       <rect>
-        <x>530</x>
-        <y>90</y>
-        <width>256</width>
-        <height>301</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="alliance_rb">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>220</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="country_rb">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>130</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="calculate_pushbutton">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>420</y>
-        <width>121</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Calculate!</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="gridLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>100</y>
-        <width>351</width>
-        <height>281</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="4" column="0">
-        <widget class="QLabel" name="overall_label">
-         <property name="text">
-          <string>Additional statistics</string>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="3" column="2">
+      <widget class="QComboBox" name="alliance_fun_cB"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QComboBox" name="country_fun_cB"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="country_cB"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="country_fun_label">
+       <property name="text">
+        <string>Choose function</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="alliance_label">
+       <property name="text">
+        <string>Choose alliance:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="country_label">
+       <property name="text">
+        <string>Choose country:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="alliance_fun_label">
+       <property name="text">
+        <string>Choose function</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="alliance_cB"/>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="overall_cB"/>
+     </item>
+     <item row="9" column="2">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLineEdit" name="k_core_size_lineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>1000000</width>
+           <height>100000</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QComboBox" name="overall_cB"/>
-       </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="alliance_fun_cB"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="country_fun_cB"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="alliance_label">
-         <property name="text">
-          <string>Choose alliance:</string>
+       <item>
+        <widget class="QLineEdit" name="Start_date_lineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>1000000</width>
+           <height>100000</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QComboBox" name="country_cB"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QComboBox" name="alliance_cB"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="country_fun_label">
-         <property name="text">
-          <string>Choose function</string>
+       <item>
+        <widget class="QLineEdit" name="End_date_lineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="country_label">
-         <property name="text">
-          <string>Choose country:</string>
+         <property name="maximumSize">
+          <size>
+           <width>1000000</width>
+           <height>100000</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="alliance_fun_label">
-         <property name="text">
-          <string>Choose function</string>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
          </property>
         </widget>
        </item>
       </layout>
-     </widget>
-     <widget class="QRadioButton" name="overall_rb">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>310</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="calculate_pushbutton_2">
-      <property name="geometry">
-       <rect>
-        <x>600</x>
-        <y>420</y>
-        <width>121</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Create plot</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Tab 2</string>
-     </attribute>
-    </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QComboBox" name="network_type_cB">
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+       </property>
+       <property name="minimumContentsLength">
+        <number>2</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="duplicatesEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="overall_label">
+       <property name="text">
+        <string>Additional statistics</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLabel" name="network_label">
+       <property name="text">
+        <string>Network type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="k_core_size_label">
+         <property name="text">
+          <string>K-core size</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="start_date_label">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Start date</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="end_date_label">
+         <property name="text">
+          <string>End date</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="country_rb">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="alliance_rb">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QRadioButton" name="overall_rb">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QRadioButton" name="network_rb">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="calculate_pushbutton">
+    <property name="geometry">
+     <rect>
+      <x>135</x>
+      <y>460</y>
+      <width>121</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Calculate!</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="calculate_pushbutton_2">
+    <property name="geometry">
+     <rect>
+      <x>575</x>
+      <y>460</y>
+      <width>121</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Create plot</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
