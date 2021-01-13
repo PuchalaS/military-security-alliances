@@ -186,15 +186,19 @@ def get_all_alliances():
         if isinstance(name, list):
             name = name[0]
         if name not in all_alliances:
-            name.replace("Â", "")
+            #name.replace("Â", "")
             all_alliances.append(name)
+    return all_alliances
 
-def get_coutries_connections():
+def get_coutries_connections(start_date, end_date):
     all_coutries_connection = []
     for vrow in alliances.view('index/thread_alliance_view'):
         row  = vrow.value
         countries = row.get('Countries')
-        all_coutries_connection += [[con1, con2] for con1 in countries for con2 in countries]
+        end = row.get('End')
+        start = row.get('Start')
+        if (int(start) <= end_date and int(end) >= start_date ):
+            all_coutries_connection += [[con1, con2] for con1 in countries for con2 in countries]
     return (all_coutries_connection)
 
 def get_buyers_sellers_connections():

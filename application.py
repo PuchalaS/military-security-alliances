@@ -184,7 +184,6 @@ class Ui_MainWindow(object):
 
 if __name__ == '__main__':
     import sys
-    x = queries_db.alliance_tanks_info("Crusades", formated = True, max_end_date=1900)
     app = QtWidgets.QApplication([])
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

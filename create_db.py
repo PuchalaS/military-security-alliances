@@ -117,7 +117,6 @@ for a_vrow in alliances.view('index/thread_alliance_view'):
                 t_quantity = t_row.get('Quantity')
                 t_orgin = t_row.get('Origin')
                 combined[str(i)] = {'Id':str(i),'Country': t_country,'Type': t_type, 'Quantity': t_quantity, 'Origin': t_orgin,'Name':a_alliance, 'Start':a_start,'End':a_end}
-                print (combined[str(i)] )
                 i+=1
 
 view = ViewDefinition('index', 'thread_combined_view',documentMapper, language = 'python')
