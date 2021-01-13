@@ -157,12 +157,130 @@ def scrape_data_alliances():
             DATE.append(date_prev)
             date = date_prev
     
+
     alliance_name = [item[0] for item in alliances]
     # Lista panstw
-    [item.pop(0) for item in alliances];
+    [item.pop(0) for item in alliances]
+
+    #alliance_name = [re.sub("[\(\[].*?[\)\]]", "", elem) for elem in alliance_name]
+    #alliances = [re.sub("[\(\[].*?[\)\]]", "", elem) for elem in alliances]
+
 
     dict_alliances = {'Name': alliance_name, 'Countries': alliances, 'Start': start_date, 'End': end_date}
     df_alliances = pd.DataFrame(dict_alliances)
     
     return df_alliances
 
+
+#---------------------------------------------------
+
+
+
+def postproces_tanks(df_tanks):
+    df_tanks = df_tanks.replace('Korea, North', 'North Korea')
+    df_tanks = df_tanks.replace('Korea, South', 'South Korea')
+    df_tanks = df_tanks.replace('North Macedniona, Republic of', 'Macedonia')
+    df_tanks = df_tanks.replace('TurkeyM60', 'Turkey')
+
+    for index, row in df_tanks.iterrows():
+        quantity = row.Quantity
+        if quantity.find(',') != -1:
+            quantity = quantity.replace(',','')
+
+        quantity = re.findall(r'\d+', quantity)
+        if len(quantity) == 0:
+            df_tanks = df_tanks.drop([index])
+        else:
+            quantity = quantity[0]
+            df_tanks.Quantity[index] = quantity
+            
+    for index, row in df_tanks.iterrows():
+        origin = row.Origin
+        origin = origin.replace('/','')
+
+        if origin.find('United States') != -1:
+            origin = 'UnitedStates'
+        elif origin.find('Soviet Union') != -1:
+            origin = 'SovietUnion'
+        elif origin.find('Czech Republic') != -1:
+            origin = 'CzechRepublic'
+        elif origin.find('United Kingdom') != -1:
+            origin = 'UnitedKingdom'
+        elif origin.find('South Korea') != -1:
+            origin = 'SouthKorea'
+        elif origin.find('North Korea') != -1:
+            origin = 'NorthKorea'
+
+        origin = origin.split()
+
+    
+        if len(origin) == 0:
+            df_tanks = df_tanks.drop([index])
+        else:
+            origin = origin[0]
+            origin = re.sub(r'([A-Z])', r' \1', origin)[1:]
+            df_tanks.Origin[index] = origin
+
+    df_tanks = df_tanks.replace('Soviet Union', 'Russia')
+    df_tanks.reset_index(drop = True, inplace = True)
+    return df_tanks
+
+
+
+
+
+def postproces_alliances(df_all):
+
+    # Poprawki w nazwach sojuszy
+    df_all['Name'] = [re.sub("[\(\[].*?[\)\]]", "", str(x)) for x in df_all['Name']]
+    for index, row in df_all.iterrows():
+        all_name = str(row.Name)
+        len(all_name)
+        if all_name.find('Samoa') != -1 or len(all_name) == 0:
+            df_all = df_all.drop([index])
+        else:
+            df_all.Name[index] = all_name
+
+    # Poprawki w liscie panstw
+    for index, row in df_all.iterrows():
+        count_list = row.Countries
+        cnt_list = []
+        for elem in count_list:
+            if re.search('[A-Z]{2}', str(elem)):
+                continue
+
+            if elem == 'Soviet Union':
+                elem = 'Russia'
+
+            cnt_list.append(elem)
+
+
+        if len(cnt_list) <= 1:
+            df_all = df_all.drop([index])
+        else:
+            df_all.Countries[index] = cnt_list
+
+    # Poprawki w datach
+    for index, row in df_all.iterrows():
+        if int(row.Start) > int(row.End):
+            df_all = df_all.drop([index])
+
+    df_all.reset_index(drop = True, inplace = True)
+    return df_all
+
+
+
+
+#df_tanks = scrape_data_tanks()
+#df_tanks1 = postproces_tanks(df_tanks)
+
+#df_tanks.Quantity[0]
+#type(df_tanks.Quantity[0])
+#type(df_tanks1.Origin[0])
+#df_tanks1.Quantity[0]
+
+#df_all = scrape_data_alliances()
+#df_all1 = postproces_alliances(df_all)
+
+#type(df_all.End[0])
+#ype(df_all1.End[0])
