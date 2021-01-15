@@ -207,32 +207,39 @@ class Ui_MainWindow(object):
         self.output_window.setFont(font)
 
     def on_click_calcualte_button(self):
-        self.draw_pushbutton.setDisabled(False)
+        
         if self.country_rb.isChecked():
             text = str(self.country_cB.currentText())
             function = self.country_fun_cB.currentIndex()
             if function == 0:
+                self.draw_pushbutton.setDisabled(False)
                 self.output_window.setText(str(queries_db.country_tank_info(text, formated = True)))
             if function == 1:
                 self.output_window.setText(str(queries_db.country_aliance_info(text, formated = True)))
             if function == 2:
+                self.draw_pushbutton.setDisabled(False)
                 self.output_window.setText(str(queries_db.country_tank_seller_origin_info(text, formated = True)))
         if self.alliance_rb.isChecked():
             text = str(self.alliance_cB.currentText())
             function = self.alliance_fun_cB.currentIndex()
             if function == 0:
+                self.draw_pushbutton.setDisabled(False)
                 self.output_window.setText(str(queries_db.alliance_tanks_info(text, formated = True, max_end_date=1900)))
             if function == 1:
                 self.output_window.setText(str(queries_db.alliance_countries_info(text, formated = True)))
             if function == 2:
+                self.draw_pushbutton.setDisabled(False)
                 self.output_window.setText(str(queries_db.alliance_tanks_origin_info(text, formated = True)))
         if self.overall_rb.isChecked():
             function = self.overall_cB.currentIndex()
             if function == 0:
+                self.draw_pushbutton.setDisabled(False)
                 self.output_window.setText(str(queries_db.overall_tanks_quantity(formated = True)))
             if function == 1:
+                self.draw_pushbutton.setDisabled(False)
                 self.output_window.setText(str(queries_db.overall_orgin_quantity(formated = True)))
             if function == 2:
+                self.draw_pushbutton.setDisabled(False)
                 self.output_window.setText(str(queries_db.overall_alliances_tank_quantity(formated = True)))
         if self.network_rb.isChecked():
             self.output_window.setText("")
@@ -256,10 +263,50 @@ class Ui_MainWindow(object):
                     self.output_window.setText("Please enter correct data")
 
     def on_click_draw_button(self):
-        x = queries_db.overall_tanks_quantity()
+        if self.country_rb.isChecked():
+            text = str(self.country_cB.currentText())
+            function = self.country_fun_cB.currentIndex()
+            if function == 0:
+                create_bar_plot(queries_db.country_tank_info(text), "Overall tank quantity")
+            if function == 2:
+                create_bar_plot(queries_db.country_tank_seller_origin_info(text), "Tanks origin")
+        if self.alliance_rb.isChecked():
+            text = str(self.alliance_cB.currentText())
+            function = self.alliance_fun_cB.currentIndex()
+            if function == 0:
+                create_bar_plot(queries_db.alliance_tanks_info(text, max_end_date=1900), "Overall tank quantity")
+            if function == 2:
+                create_bar_plot(queries_db.alliance_tanks_origin_info(text), "Tanks origin")
+        if self.overall_rb.isChecked():
+            function = self.overall_cB.currentIndex()
+            if function == 0:
+                create_bar_plot(queries_db.overall_tanks_quantity(), "Overall tank quantity")
+            if function == 1:
+                create_bar_plot(queries_db.overall_orgin_quantity(), "Biggest sellers")
+            if function == 2:
+                create_bar_plot(queries_db.overall_alliances_tank_quantity(), "Strongst alliances")
+        if self.network_rb.isChecked():
+            self.output_window.setText("")
+            function = self.network_type_cB.currentIndex()
+            k_core = self.k_core_size_lineEdit.text()
+            if function == 0:
+                start_date = self.Start_date_lineEdit.text()
+                end_date = self.End_date_lineEdit.text()
+                try:
+                    k_core = int(k_core)
+                    start_date = int(start_date)
+                    end_date = int(end_date)
+                    draw_alliance_graph(start_date, end_date, k_core)
+                except:
+                    self.output_window.setText("Please enter correct data")
+            if function == 1:
+                try:
+                    k_core = int(k_core)
+                    draw_buyers_sellers_graph(k_core)
+                except:
+                    self.output_window.setText("Please enter correct data")
         
-        create_bar_plot(x, "Overall tank quantity")
-
+       
     def deactive_plot_button(self):
         self.draw_pushbutton.setDisabled(True)
 

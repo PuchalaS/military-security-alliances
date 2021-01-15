@@ -186,9 +186,8 @@ def get_all_alliances():
         if isinstance(name, list):
             name = name[0]
         if name not in all_alliances:
-            #name.replace("Â", "")
             all_alliances.append(name)
-    return all_alliances
+    return sorted(all_alliances)
 
 def get_coutries_connections(start_date, end_date):
     all_coutries_connection = []

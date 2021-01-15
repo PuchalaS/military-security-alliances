@@ -21,8 +21,8 @@ def draw_alliance_graph (start_date, end_date, k_core):
     G = nx.Graph(G)
     G.remove_edges_from(nx.selfloop_edges(G))
     G = nx.k_core(G, k_core)
-
-    nx.draw(G, with_labels = True)
+    nx.draw(G, node_size=160, font_size=10, with_labels=True, node_color="forestgreen", font_color = "black",
+            edge_color="skyblue")
     plt.show()
 
 
@@ -44,7 +44,6 @@ def draw_buyers_sellers_graph (k_core):
     G.remove_edges_from(nx.selfloop_edges(G))
     G = nx.k_core(G, k_core)
 
-    nx.draw(G, with_labels = True) 
+    nx.draw(G, node_size=160, font_size=10, with_labels=True, node_color="forestgreen", font_color = "black",
+            edge_color="skyblue")
     plt.show()
-
-        
