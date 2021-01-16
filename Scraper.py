@@ -265,8 +265,15 @@ def postproces_alliances(df_all):
         if int(row.Start) > int(row.End):
             df_all = df_all.drop([index])
 
+    # Usuwanie duplikatow
+    df_all = df_all.drop_duplicates(subset=['Name'])
+
+    # Sortowanie
+    df_all = df_all.sort_values(by=['Name'])
+
     df_all.reset_index(drop = True, inplace = True)
     return df_all
+
 
 
 
