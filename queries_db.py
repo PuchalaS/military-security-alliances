@@ -21,7 +21,7 @@ def create_table(fields, data):
     pt = PrettyTable(field_names = fields)
     for f in fields:
         pt.align = 'l'
-    data.sort(key=lambda x: x[1],reverse=True)
+    data.sort(key=lambda x: int(x[1]),reverse=True)
     for row in data:
         pt.add_row([row[0], row[1]])
     return pt.get_string()
@@ -208,4 +208,3 @@ def get_buyers_sellers_connections():
         seller = row.get('Origin')
         all_buyers_seller_connection.append([buyer, seller])
     return (all_buyers_seller_connection)
-
