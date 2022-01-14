@@ -19,7 +19,7 @@ combined = couch['combined']
 
 def create_table(fields, data):
     pt = PrettyTable(field_names = fields)
-    for f in fields:
+    for _ in fields:
         pt.align = 'l'
     data.sort(key=lambda x: int(x[1]),reverse=True)
     for row in data:
@@ -28,7 +28,7 @@ def create_table(fields, data):
 
 def create_table_1col(fields, data):
     pt = PrettyTable(field_names = fields)
-    for f in fields:
+    for _ in fields:
         pt.align = 'l'
     data.sort()
     for row in data:
@@ -89,18 +89,14 @@ def alliance_tanks_info(x_alliance, formated = False, max_end_date = 1900):
         row  = vrow.value
         alliance = row.get('Name')
         end = int(row.get('End'))
-        if (alliance == x_alliance):
-            if (end <= max_end_date):
-                if not formated:
-                    return []
-                else:
-                    return ["No available information"]
+        if (alliance == x_alliance) and (end <= max_end_date):
+            return [] if not formated else ["No available information"]
     for vrow in combined.view('index/alliance_tank_type_view', group_level = 2):
         row  = vrow.key
         alliance = row[0]
         if (alliance == x_alliance):
             alliance_tank_list.append((row[1], vrow.value))
-        
+
     if not formated:
         return alliance_tank_list
     else:
@@ -136,10 +132,13 @@ def alliance_tanks_origin_info(x_alliance, formated = False):
 def overall_tanks_quantity(formated = False):
     '''Query for whole db - type quantity information
     returns: tuple list of (type, quantity)'''
-    overall_tanks_quantity_list = []
-    for vrow in tanks.view('index/overall_tank_type_quantity_view', group_level = 1):
-        row  = vrow.key
-        overall_tanks_quantity_list.append((row, vrow.value))
+    overall_tanks_quantity_list = [
+        (vrow.key, vrow.value)
+        for vrow in tanks.view(
+            'index/overall_tank_type_quantity_view', group_level=1
+        )
+    ]
+
     if not formated:
         return overall_tanks_quantity_list
     else:
@@ -148,10 +147,13 @@ def overall_tanks_quantity(formated = False):
 def overall_orgin_quantity(formated = False):
     '''Query for whole db - orgin quantity information
     returns: tuple list of (orgin, quantity)'''
-    overall_orgin_quantity_list = []
-    for vrow in tanks.view('index/overall_tank_orgin_quantity_view', group_level = 1):
-        row  = vrow.key
-        overall_orgin_quantity_list.append((row, vrow.value))
+    overall_orgin_quantity_list = [
+        (vrow.key, vrow.value)
+        for vrow in tanks.view(
+            'index/overall_tank_orgin_quantity_view', group_level=1
+        )
+    ]
+
     if not formated:
         return overall_orgin_quantity_list
     else:
@@ -160,10 +162,13 @@ def overall_orgin_quantity(formated = False):
 def overall_alliances_tank_quantity(formated = False):
     '''Query for whole db - orgin quantity information
     returns: tuple list of (orgin, quantity)'''
-    overall_alliances_tank_quantity_list = []
-    for vrow in combined.view('index/overall_alliance_tanks_quantity_view', group_level = 1):
-        row  = vrow.key
-        overall_alliances_tank_quantity_list.append((row, vrow.value))
+    overall_alliances_tank_quantity_list = [
+        (vrow.key, vrow.value)
+        for vrow in combined.view(
+            'index/overall_alliance_tanks_quantity_view', group_level=1
+        )
+    ]
+
     if not formated:
         return overall_alliances_tank_quantity_list
     else:

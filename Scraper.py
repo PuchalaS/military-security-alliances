@@ -9,7 +9,7 @@ import re
 
 def scrape_data_tanks():
     url = 'https://en.wikipedia.org/wiki/List_of_main_battle_tanks_by_country?fbclid=IwAR0g7YWlmOIOpQ-Z6oPJUojZXk5jm_Z6-I67QB_qg5qIicCEQxL49bTpzGI'
-    html = urlopen(url) 
+    html = urlopen(url)
     soup = BeautifulSoup(html, 'html.parser')
 
 
@@ -51,8 +51,7 @@ def scrape_data_tanks():
     # dictionary
 
     dict_tanks_2 = {'Country':countries, 'Type':tank_types, 'Quantity': quantities, 'Origin': origins}
-    df_tanks = pd.DataFrame(dict_tanks_2)
-    return df_tanks
+    return pd.DataFrame(dict_tanks_2)
 
 # ---------------------------------------------------------------------------------------------
 # Dane dotyczace sojuszy
@@ -60,7 +59,7 @@ def scrape_data_tanks():
 def scrape_data_alliances():
     url_parent = 'https://en.wikipedia.org/wiki/List_of_military_alliances?fbclid=IwAR3k0PJ2F2mSv_FypCsdonLtqz4aW7ZNL2KKDXn8vj4BT93gpOdNOHDiQ38'
 
-    html_parent = urlopen(url_parent) 
+    html_parent = urlopen(url_parent)
     soup_parent = BeautifulSoup(html_parent, 'html.parser')
 
 
@@ -116,11 +115,10 @@ def scrape_data_alliances():
                         end_date.append(date_new[0])
                     else:
                         if len(date) >= 2:
-                            start_date.append(date[0])
                             end_date.append(date[1])
                         else:
-                            start_date.append(date[0])
                             end_date.append(date[0])
+                        start_date.append(date[0])
                 else:
                     if len(wiki_link) > 0 and ('wiki' in wiki_link[0]):
                         #print(wiki_link[0])
@@ -143,11 +141,11 @@ def scrape_data_alliances():
                         start_date.append('0')
 
                     end_date.append('3000')
-                
+
                 # Ustawienie flagi dla wspolczesnych sojuszy
                 if titles[0] == 'Kosovo Force':
                     historical_flag = 0
-                
+
 
         date = re.findall(r'\d+',dot.text.strip())
         if date:
@@ -156,7 +154,7 @@ def scrape_data_alliances():
         else:
             DATE.append(date_prev)
             date = date_prev
-    
+
 
     alliance_name = [item[0] for item in alliances]
     # Lista panstw
@@ -167,9 +165,7 @@ def scrape_data_alliances():
 
 
     dict_alliances = {'Name': alliance_name, 'Countries': alliances, 'Start': start_date, 'End': end_date}
-    df_alliances = pd.DataFrame(dict_alliances)
-    
-    return df_alliances
+    return pd.DataFrame(dict_alliances)
 
 
 #---------------------------------------------------
@@ -236,7 +232,7 @@ def postproces_alliances(df_all):
     for index, row in df_all.iterrows():
         all_name = str(row.Name)
         len(all_name)
-        if all_name.find('Samoa') != -1 or len(all_name) == 0:
+        if 'Samoa' in all_name or all_name == '':
             df_all = df_all.drop([index])
         else:
             df_all.Name[index] = all_name
