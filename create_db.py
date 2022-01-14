@@ -1,35 +1,26 @@
 import couchdb
 from couchdb.design import ViewDefinition
 from Scraper import scrape_data_tanks, scrape_data_alliances, postproces_alliances, postproces_tanks
- 
+
 
 couch = couchdb.Server("http://admin:admin@localhost:5984")
 
 if 'tanks' in couch:
     #tanks = couch['tanks']
     del couch['tanks']
-    tanks = couch.create('tanks')
-else:
-    tanks = couch.create('tanks')
-
+tanks = couch.create('tanks')
 if 'alliances' in couch:
     #alliances = couch['alliances']
     del couch['alliances']
-    alliances = couch.create('alliances')
-else:
-    alliances = couch.create('alliances')
-
+alliances = couch.create('alliances')
 if 'combined' in couch:
     #alliances = couch['alliances']
     del couch['combined']
-    combined = couch.create('combined')
-else:
-    combined = couch.create('combined')
-
+combined = couch.create('combined')
 df_tanks = scrape_data_tanks()
 df_tanks = postproces_tanks(df_tanks)
 for row in df_tanks.itertuples():
-    
+
     tanks[str(row.Index +1)] = {'Id':str(row.Index +1),'Country':row.Country,'Type': row.Type, 'Quantity': row.Quantity, 'Origin': row.Origin}
 
 df_alliances = scrape_data_alliances()
